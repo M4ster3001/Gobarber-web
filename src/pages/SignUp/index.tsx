@@ -3,17 +3,25 @@ import { FiLogIn, FiMail, FiLock, FiUser, FiArrowLeft } from 'react-icons/fi';
 import { Form } from '@unform/web';
 import * as Yup from 'yup';
 import { FormHandles } from '@unform/core';
+import { Redirect, useHistory } from 'react-router-dom';
 import { Container, Content, Background } from './styles';
 
 import logo from '../../assets/logo.svg';
 import Button from '../../components/Button';
 import Input from '../../components/Input';
 import getValidationErros from '../../utils/getValidationErros';
+import api from '../../services/api';
+
+interface SignInFormData {
+  name: string;
+  email: string;
+  password: string;
+}
 
 const SignUp: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
 
-  const handleSubmit = useCallback(async (data: object) => {
+  const handleSubmit = useCallback(async (data: SignInFormData) => {
     try {
       formRef.current?.setErrors({});
 
@@ -26,6 +34,19 @@ const SignUp: React.FC = () => {
       });
 
       await schema.validate(data, { abortEarly: false });
+
+      await api
+        .post('users', {
+          name: data.name,
+          email: data.email,
+          password: data.password,
+        })
+        .then(response => {
+          console.log(response);
+        })
+        .catch(err => {
+          console.log(err);
+        });
     } catch (err) {
       const erros = getValidationErros(err);
 
