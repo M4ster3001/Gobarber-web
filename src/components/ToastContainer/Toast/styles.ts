@@ -24,15 +24,7 @@ const toastType = {
   `,
 };
 
-export const Container = styled.div`
-  position: absolute;
-  right: 0;
-  top: 0;
-  padding: 30px;
-  overflow: hidden;
-`;
-
-export const Toast = styled.div<ToastPros>`
+export const Container = styled.div<ToastPros>`
   width: 360px;
 
   position: relative;
