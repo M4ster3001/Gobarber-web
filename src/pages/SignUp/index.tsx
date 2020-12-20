@@ -1,10 +1,10 @@
 import React, { useCallback, useRef } from 'react';
-import { FiLogIn, FiMail, FiLock, FiUser, FiArrowLeft } from 'react-icons/fi';
+import { FiMail, FiLock, FiUser, FiArrowLeft } from 'react-icons/fi';
 import { Form } from '@unform/web';
 import * as Yup from 'yup';
 import { FormHandles } from '@unform/core';
-import { Redirect, useHistory } from 'react-router-dom';
-import { Container, Content, Background } from './styles';
+import { Link } from 'react-router-dom';
+import { Container, Content, Background, AnimationContainer } from './styles';
 
 import logo from '../../assets/logo.svg';
 import Button from '../../components/Button';
@@ -58,27 +58,34 @@ const SignUp: React.FC = () => {
     <Container>
       <Background />
       <Content>
-        <img src={logo} alt="GoBarber" />
+        <AnimationContainer>
+          <img src={logo} alt="GoBarber" />
 
-        <Form ref={formRef} onSubmit={handleSubmit}>
-          <h1>Faça seu cadastro</h1>
+          <Form ref={formRef} onSubmit={handleSubmit}>
+            <h1>Faça seu cadastro</h1>
 
-          <Input name="name" icon={FiUser} type="text" placeholder="Nome" />
-          <Input name="email" icon={FiMail} type="text" placeholder="E-mail" />
-          <Input
-            name="password"
-            icon={FiLock}
-            type="password"
-            placeholder="Senha"
-          />
+            <Input name="name" icon={FiUser} type="text" placeholder="Nome" />
+            <Input
+              name="email"
+              icon={FiMail}
+              type="text"
+              placeholder="E-mail"
+            />
+            <Input
+              name="password"
+              icon={FiLock}
+              type="password"
+              placeholder="Senha"
+            />
 
-          <Button type="submit">Cadastrar</Button>
-        </Form>
+            <Button type="submit">Cadastrar</Button>
+          </Form>
 
-        <a href="login">
-          <FiArrowLeft />
-          Voltar para o login
-        </a>
+          <Link to="/">
+            <FiArrowLeft />
+            Voltar para o login
+          </Link>
+        </AnimationContainer>
       </Content>
     </Container>
   );
