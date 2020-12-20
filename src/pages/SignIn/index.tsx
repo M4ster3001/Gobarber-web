@@ -17,6 +17,11 @@ interface SignInFormData {
   password: string;
 }
 
+interface IResponse {
+  status: string;
+  message?: string;
+}
+
 const SignIn: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
   const { addToast } = useToast();
@@ -37,7 +42,21 @@ const SignIn: React.FC = () => {
 
         await schema.validate(data, { abortEarly: false });
 
-        await signIn({ email: data.email, password: data.password });
+        await signIn({ email: data.email, password: data.password })
+          .then(response => {
+            addToast({
+              type: 'success',
+              title: 'Sucesso ao logar',
+              description: 'Logando',
+            });
+          })
+          .catch(err => {
+            addToast({
+              type: 'error',
+              title: 'Erro ao logar',
+              description: 'Verifique as credencias',
+            });
+          });
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
           const erros = getValidationErros(err);
