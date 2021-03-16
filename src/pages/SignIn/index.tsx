@@ -26,6 +26,7 @@ interface IResponse {
 const SignIn: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
   const { addToast } = useToast();
+  const hitory = useHistory();
 
   const { signIn } = useAuth();
 
@@ -50,6 +51,8 @@ const SignIn: React.FC = () => {
               title: 'Sucesso ao logar',
               description: 'Logando',
             });
+
+            hitory.push('/Dashboard');
           })
           .catch(err => {
             addToast({
@@ -74,7 +77,7 @@ const SignIn: React.FC = () => {
         });
       }
     },
-    [addToast, signIn],
+    [addToast, signIn, hitory],
   );
 
   return (
@@ -101,7 +104,7 @@ const SignIn: React.FC = () => {
 
             <Button type="submit">Entrar</Button>
 
-            <a href="forgot">Esqueci minha senha</a>
+            <Link to="/forgot-password">Esqueci minha senha</Link>
           </Form>
 
           <Link to="/signup">

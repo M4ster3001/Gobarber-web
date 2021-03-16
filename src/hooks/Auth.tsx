@@ -24,7 +24,7 @@ export const AuthProvider: React.FC = ({ children }) => {
     const token = localStorage.getItem('@GoBarber:token');
     const user = localStorage.getItem('@GoBarber:user');
 
-    if (token && user) {
+    if (token && user && user !== 'undefined') {
       return { token, user: JSON.parse(user) };
     }
 
