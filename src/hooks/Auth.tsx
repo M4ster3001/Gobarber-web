@@ -30,6 +30,8 @@ export const AuthProvider: React.FC = ({ children }) => {
     const user = localStorage.getItem('@GoBarber:user');
 
     if (token && user && user !== 'undefined') {
+      api.defaults.headers.authorization = `Bearer ${token}`;
+
       return { token, user: JSON.parse(user) };
     }
 
@@ -37,19 +39,16 @@ export const AuthProvider: React.FC = ({ children }) => {
   });
 
   const signIn = useCallback(async ({ email, password }) => {
-    await api
-      .post<{ token: string; user: object }>('sessions', { email, password })
-      .then(response => {
-        const { token, user } = response.data;
+    await api.post('sessions', { email, password }).then(response => {
+      const { token, user } = response.data;
 
-        localStorage.setItem('@GoBarber:token', token);
-        localStorage.setItem('@GoBarber:user', JSON.stringify(user));
+      localStorage.setItem('@GoBarber:token', token);
+      localStorage.setItem('@GoBarber:user', JSON.stringify(user));
 
-        setData({ token, user });
-      })
-      .catch(err => {
-        console.log(err);
-      });
+      api.defaults.headers.authorization = `Bearer ${token}`;
+
+      setData({ token, user });
+    });
   }, []);
 
   const signOut = useCallback(() => {

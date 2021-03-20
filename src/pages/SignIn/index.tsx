@@ -44,8 +44,8 @@ const SignIn: React.FC = () => {
 
         await schema.validate(data, { abortEarly: false });
 
-        await signIn({ email: data.email, password: data.password })
-          .then(response => {
+        await signIn({ email: data.email, password: data.password }).then(
+          response => {
             addToast({
               type: 'success',
               title: 'Sucesso ao logar',
@@ -53,14 +53,8 @@ const SignIn: React.FC = () => {
             });
 
             hitory.push('/Dashboard');
-          })
-          .catch(err => {
-            addToast({
-              type: 'error',
-              title: 'Erro ao logar',
-              description: 'Verifique as credencias',
-            });
-          });
+          },
+        );
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
           const erros = getValidationErros(err);
