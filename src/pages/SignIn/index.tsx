@@ -26,7 +26,7 @@ interface IResponse {
 const SignIn: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
   const { addToast } = useToast();
-  const hitory = useHistory();
+  const history = useHistory();
 
   const { signIn } = useAuth();
 
@@ -44,17 +44,12 @@ const SignIn: React.FC = () => {
 
         await schema.validate(data, { abortEarly: false });
 
-        await signIn({ email: data.email, password: data.password }).then(
-          response => {
-            addToast({
-              type: 'success',
-              title: 'Sucesso ao logar',
-              description: 'Logando',
-            });
+        await signIn({
+          email: data.email,
+          password: data.password,
+        });
 
-            hitory.push('/Dashboard');
-          },
-        );
+        history.push('/dashboard');
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
           const erros = getValidationErros(err);
@@ -71,7 +66,7 @@ const SignIn: React.FC = () => {
         });
       }
     },
-    [addToast, signIn, hitory],
+    [addToast, signIn, history],
   );
 
   return (

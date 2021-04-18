@@ -41,16 +41,19 @@ export const AuthProvider: React.FC = ({ children }) => {
   });
 
   const signIn = useCallback(async ({ email, password }) => {
-    await api.post('sessions', { email, password }).then(response => {
-      const { token, user } = response.data;
-
-      localStorage.setItem('@GoBarber:token', token);
-      localStorage.setItem('@GoBarber:user', JSON.stringify(user));
-
-      api.defaults.headers.authorization = `Bearer ${token}`;
-
-      setData({ token, user });
+    const response = await api.post('sessions', {
+      email,
+      password,
     });
+
+    const { token, user } = response.data;
+
+    localStorage.setItem('@GoBarber:token', token);
+    localStorage.setItem('@GoBarber:user', JSON.stringify(user));
+
+    api.defaults.headers.authorization = `Bearer ${token}`;
+
+    setData({ token, user });
   }, []);
 
   const signOut = useCallback(() => {
@@ -83,10 +86,6 @@ export const AuthProvider: React.FC = ({ children }) => {
 
 export function useAuth(): IAuthContext {
   const context = useContext(AuthContext);
-
-  if (!context) {
-    throw new Error('Sem contexto na autenticação');
-  }
 
   return context;
 }
